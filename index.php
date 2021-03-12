@@ -1,22 +1,3 @@
-<!-- <? phpclass User
-{
-    public $id;
-    public $username;
-    private $password;
-
-    public function __construct($id, $username)
-    {
-        this->id = $id;
-        this->username = $username;
-    }
-
-    public function setPassword($password)
-    {
-        this->password = $password;
-    }
-} ?> -->
-
-
 <?php
 $username = $password = $error_message = $success = "";
 
@@ -89,27 +70,16 @@ if ($success)
 
   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
     <h1>Login</h1>
-    <div class="row g-3 align-items-center">
-     <div class="col-auto">
-      <label for="username" class="col-form-label">Username</label>
-    </div>
-    <div class="col-auto">
-      <input type="username" name="username" class="form-control">
-    </div>
-
-  </div>
-  <div class="row g-3 align-items-center">
-   <div class="col-auto">
-    <label for="inputPassword6" class="col-form-label">Password</label>
-  </div>
-  <div class="col-auto">
-    <input type="password" name="password" class="form-control" aria-describedby="passwordHelpInline">
+    <div class="form-group">
+    <label for="username">Username</label>
+    <input type="username" name="username" class="form-control" id="username" placeholder="Enter username">
   </div>
   <div class="form-group">
-    <input type="submit" class="btn btn-primary" value="Login">
+    <label for="password">Password</label>
+    <input type="password" name="password" class="form-control" id="password" placeholder="Password">
   </div>
-
-</div>
+    
+  <button type="submit" class="btn btn-primary">Login</button>
 </form>
 </div>
 </body>
