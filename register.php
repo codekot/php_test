@@ -1,18 +1,42 @@
 <?php
 
-$username = $password = $error_message = $success = "";
+require_once "user.php";
+
+$username = $password = $confirm_password = "";
+$username_err = $password_err = $confirm_password_err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
   if(empty($_POST["username"])){
-    $error_message = "Enter username";
+    $username_err = "Enter a username";
   } else {
     $username = $_POST["username"];
+    $user = get_user($username);
+    if($user) {
+      $username_err = "This username is already taken";
+    } else {
+      if(empty($_POST["password"])){
+        $password_err = "Please enter a password";
+      } else {
+        $password = $_POST["password"];
+      }
+      if(empty($_POST["confirm_password"])){
+        $confirm_password_err = "Please confirm password";
+      } else {
+        $confirm_password = $_POST["confirm_password"];
+        if($confirm_password != $password){
+          $confirm_password_err = "Passwords should match";
+        } else if (!$user) {
+          $hash_password = password_hash($password, PASSWORD_DEFAULT);
+          if(write_user($username, $hash_password)){
+            header('location: index.php');
+          } else {
+            echo "Something went wrong";
+          }
+        }
+      }
+    }
   }
-  if(empty($_POST["password"])){
-    $error_message = "Please enter a password";
-  }
-  if
 }
 ?>
 
@@ -35,21 +59,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
   <div class="form-group">
     <label for="username">Username</label>
-    <input type="username" name="username" class="form-control" id="username" placeholder="Enter username">
+    <input type="username" name="username" class="form-control" id="username" placeholder="Enter username" value="<?php echo $username; ?>">
+    <!-- <span class="help-block"><?php echo $username_err; ?></span> -->
+    <?php if ($username_err){
+      echo '<div class="alert alert-danger" role="alert">' . $username_err . '</div>';
+    }?>
   </div>
   <div class="form-group">
     <label for="password">Password</label>
-    <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+    <input type="password" name="password" class="form-control" id="password" placeholder="Password" value="<?php echo $password; ?>">
+    <?php if ($password_err){
+      echo '<div class="alert alert-danger" role="alert">' . $password_err . '</div>';
+    }?>
   </div>
   <div class="form-group">
     <label for="password">Confirm password</label>
-    <input type="password" name="confirm_password" class="form-control" id="password" placeholder="Repeat assword">
+    <input type="password" name="confirm_password" class="form-control" id="password" placeholder="Confirm password" value="<?php echo $confirm_password; ?>">
+    <?php if ($confirm_password_err){
+      echo '<div class="alert alert-danger" role="alert">' . $confirm_password_err . '</div>';
+    }?>
   </div>
   
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<p class="text-muted">Already have an account? <a href="index.php" class="link-primary">Login here</a>.
+</p>
 </div>
 
-    
+
+   
   </body>
 </html>

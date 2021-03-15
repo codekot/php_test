@@ -1,4 +1,7 @@
 <?php
+
+require_once "user.php";
+
 $username = $password = $error_message = $success = "";
 
 
@@ -13,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $username = $_POST["username"];
         $password = $_POST["password"];
         //$success = "success";
-        $user = getUser($username);
+        $user = get_user($username);
         if (!$user)
         {
             $error_message = "User not found";
@@ -31,16 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 };
 
-function getUser($username)
-{
-    $pdo = new PDO('mysql:host=localhost;port=3306;dbname=php_test', 'root', '');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE username=:username');
-    $stmt->execute([':username' => $username]);
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $result;
-};
-
 
 ?>
 
@@ -52,7 +45,7 @@ function getUser($username)
     <meta name="viewport"> 
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>Login page</title>
 </head>
@@ -68,11 +61,11 @@ if ($success)
 }
 ?>
 
-  <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+  <form method="post" action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>'>
     <h1>Login</h1>
     <div class="form-group">
     <label for="username">Username</label>
-    <input type="username" name="username" class="form-control" id="username" placeholder="Enter username">
+    <input name="username" class="form-control" id="username" placeholder="Enter username">
   </div>
   <div class="form-group">
     <label for="password">Password</label>
@@ -81,6 +74,10 @@ if ($success)
     
   <button type="submit" class="btn btn-primary">Login</button>
 </form>
+<p class="text-muted">Not registered? <a href="register.php" class="link-primary">Create an account</a>.
+</p>
 </div>
+
+
 </body>
 </html>
