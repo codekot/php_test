@@ -1,39 +1,15 @@
 <?php
 
-require_once "user.php";
+session_start();
 
-$username = $password = $error_message = $success = "";
+$error_message = $username = $success = "";
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST")
-{
-    if (empty($_POST["username"]) || empty($_POST["password"]))
-    {
-        $error_message = "Enter username and password";
-    }
-    else
-    {
-        $username = $_POST["username"];
-        $password = $_POST["password"];
-        //$success = "success";
-        $user = get_user($username);
-        if (!$user)
-        {
-            $error_message = "User not found";
-        }
-        else
-        {
-            $hash_password = $user[0]["password"];
-            if (password_verify($password, $hash_password))
-            {
-                $success = "success";
-            }
-        }
-
-    }
-
-};
-
+if (!isset($_SESSION["loggedin"])){
+  $error_message = "You are not logged in. Please log in and try again.";
+} elseif ($_SESSION["loggedin"] == true) {
+  $success = "Welcome";
+  $username = $_SESSION["username"];
+}
 
 ?>
 
@@ -47,35 +23,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>Login page</title>
+    <title>Home page</title>
 </head>
 <body>
  <div class="container">
+  <h1>Home page</h1>
   <?php if ($error_message)
 {
     echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
+    echo '<a href="login.php" class="link-primary">Login here</a>';
 };
 if ($success)
 {
     echo '<div class="alert alert-success" role="alert">Welcome ' . $username . '!</div>';
+    echo '<a href="logout.php" class="text-muted">To logout press here</a>';
 }
 ?>
 
-  <form method="post" action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>'>
-    <h1>Login</h1>
-    <div class="form-group">
-    <label for="username">Username</label>
-    <input name="username" class="form-control" id="username" placeholder="Enter username">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" name="password" class="form-control" id="password" placeholder="Password">
-  </div>
-    
-  <button type="submit" class="btn btn-primary">Login</button>
-</form>
-<p class="text-muted">Not registered? <a href="register.php" class="link-primary">Create an account</a>.
-</p>
 </div>
 
 

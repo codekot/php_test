@@ -3,7 +3,7 @@
 require_once "user.php";
 
 $username = $password = $confirm_password = "";
-$username_err = $password_err = $confirm_password_err = "";
+$username_err = $password_err = $confirm_password_err = $error_message"";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -26,12 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $confirm_password = $_POST["confirm_password"];
         if($confirm_password != $password){
           $confirm_password_err = "Passwords should match";
-        } else if (!$user) {
+        } elseif (!$user) {
           $hash_password = password_hash($password, PASSWORD_DEFAULT);
           if(write_user($username, $hash_password)){
             header('location: index.php');
           } else {
-            echo "Something went wrong";
+            $error_message = "Something went wrong";
           }
         }
       }
@@ -53,14 +53,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
     <title>Register</title>
   </head>
+
   <body>
     <div class="container">
     <h1>Register</h1>
+    <?php if ($error_message){
+    echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
+    }?>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
   <div class="form-group">
     <label for="username">Username</label>
     <input type="username" name="username" class="form-control" id="username" placeholder="Enter username" value="<?php echo $username; ?>">
-    <!-- <span class="help-block"><?php echo $username_err; ?></span> -->
     <?php if ($username_err){
       echo '<div class="alert alert-danger" role="alert">' . $username_err . '</div>';
     }?>
@@ -82,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
   
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-<p class="text-muted">Already have an account? <a href="index.php" class="link-primary">Login here</a>.
+<p class="text-muted">Already have an account? <a href="login.php" class="link-primary">Login here</a>.
 </p>
 </div>
 
