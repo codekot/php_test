@@ -31,6 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 $_SESSION["loggedin"] = true;
                 $_SESSION["username"] = $username;
                 header('location: index.php');
+            } else {
+                $error_message = "Wrong password";
             }
         }
 
@@ -55,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 </head>
 <body>
  <div class="container">
+    <?php include_once "header.php"; ?>
     <h1>Login</h1>
     <?php if ($error_message)
     {

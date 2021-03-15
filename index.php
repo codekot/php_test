@@ -27,6 +27,7 @@ if (!isset($_SESSION["loggedin"])){
 </head>
 <body>
  <div class="container">
+  <?php include_once "header.php"; ?>
   <h1>Home page</h1>
   <?php if ($error_message)
 {

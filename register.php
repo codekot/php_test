@@ -56,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
   <body>
     <div class="container">
+    <?php include_once "header.php"; ?>
     <h1>Register</h1>
     <?php if ($error_message){
     echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
