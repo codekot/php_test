@@ -3,7 +3,7 @@
 require_once "user.php";
 
 $username = $password = $confirm_password = "";
-$username_err = $password_err = $confirm_password_err = $error_message"";
+$username_err = $password_err = $confirm_password_err = $error_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         } elseif (!$user) {
           $hash_password = password_hash($password, PASSWORD_DEFAULT);
           if(write_user($username, $hash_password)){
-            header('location: index.php');
+            header('location: login.php');
           } else {
             $error_message = "Something went wrong";
           }
