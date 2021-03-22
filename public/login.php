@@ -1,6 +1,6 @@
 <?php
 
-require_once "user.php";
+require_once "../user.php";
 session_start();
 
 $username = $password = $error_message = $success = "";
@@ -40,6 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 };
 
-include_once "views/login_view.php";
+include_once "../views/login_view.php";
 ?>
 

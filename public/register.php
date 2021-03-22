@@ -1,6 +1,6 @@
 <?php
 
-require_once "user.php";
+require_once "../user.php";
 
 $username = $password = $confirm_password = "";
 $username_err = $password_err = $confirm_password_err = $error_message = "";
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
   }
 }
 
-include_once "views/register_view.php";
+include_once "../views/register_view.php";
 ?>
 
 
